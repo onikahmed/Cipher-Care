@@ -169,7 +169,5 @@ public class CipherCareAddGUI {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new CipherCareAddGUI());
-    }
+
 }
