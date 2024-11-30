@@ -27,17 +27,16 @@ DROP TABLE IF EXISTS `appointment`;
 CREATE TABLE `appointment` (
   `appointmentID` int NOT NULL AUTO_INCREMENT,
   `recordID` int NOT NULL,
-  `telehealthID` int NOT NULL,
+  `telehealthID` int DEFAULT NULL,
   `date` date NOT NULL,
-  `startTime` varchar(45) NOT NULL,
-  `endTime` varchar(45) NOT NULL,
+  `startTime` time NOT NULL,
+  `endTime` time NOT NULL,
   PRIMARY KEY (`appointmentID`),
-  UNIQUE KEY `appointmentID_UNIQUE` (`appointmentID`),
-  KEY `fk_Appointment_MedicalRecord1_idx` (`recordID`),
-  KEY `fk_Appointment_Telehealth1_idx` (`telehealthID`),
-  CONSTRAINT `fk_Appointment_MedicalRecord1` FOREIGN KEY (`recordID`) REFERENCES `medicalrecord` (`recordID`),
-  CONSTRAINT `fk_Appointment_Telehealth1` FOREIGN KEY (`telehealthID`) REFERENCES `telehealth` (`telehealthID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  KEY `recordID` (`recordID`),
+  KEY `telehealthID` (`telehealthID`),
+  CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`recordID`) REFERENCES `medicalrecord` (`recordID`),
+  CONSTRAINT `appointment_ibfk_2` FOREIGN KEY (`telehealthID`) REFERENCES `telehealth` (`telehealthID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,6 +45,7 @@ CREATE TABLE `appointment` (
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
+INSERT INTO `appointment` VALUES (4,3,NULL,'2025-02-01','11:00:00','11:30:00'),(5,2,1,'2024-02-01','01:00:00','01:35:00');
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,6 +158,14 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES (1,'root','root');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'ciphercare'
+--
+
+--
+-- Dumping routines for database 'ciphercare'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -168,4 +176,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-26 22:22:03
+-- Dump completed on 2024-11-29 20:43:55
