@@ -90,7 +90,11 @@ public class CipherCareAppointmentGUI {
                     String startTime = resultSet.getString("startTime");
                     String endTime = resultSet.getString("endTime");
 
-                    appointmentModel.addRow(new Object[]{appointmentID, recordID, telehealthID, date, startTime, endTime});
+                    // Convert Telehealth ID to descriptive text
+                    String appointmentType = (telehealthID == 1) ? "Telehealth" : "In-person";
+
+                    // Add row to the table
+                    appointmentModel.addRow(new Object[]{appointmentID, recordID, appointmentType, date, startTime, endTime});
                 }
             }
         } catch (SQLException e) {
@@ -98,6 +102,7 @@ public class CipherCareAppointmentGUI {
             e.printStackTrace();
         }
     }
+
 
     private void addAppointment() {
         // Create form fields
