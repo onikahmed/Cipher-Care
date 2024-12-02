@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.Timer;
+import javax.swing.Timer;
 
 public class CipherCareMainGUI {
     private JFrame frame;
@@ -30,6 +32,9 @@ public class CipherCareMainGUI {
 
         initializeUI();
         frame.setVisible(true);
+    }
+    private void disableTableEditOnDoubleClick() {
+        table.setDefaultEditor(Object.class, null); // Disable cell editing
     }
 
     private void initializeUI() {
@@ -90,7 +95,185 @@ public class CipherCareMainGUI {
         table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
         frame.add(scrollPane, BorderLayout.CENTER);
+
+
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            private long lastClickTime = 0;
+
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                long currentTime = System.currentTimeMillis();
+                //System.out.println("Mouse clicked! Current time: " + currentTime);
+
+                // Check if the time between clicks is within the double-click threshold
+                if (currentTime - lastClickTime < 400) { // 400ms threshold
+                    //System.out.println("Double-click detected!");
+                    int selectedRow = table.getSelectedRow();
+                    //System.out.println("Double-click detected! Selected Row: " + selectedRow);
+
+                    if (selectedRow >= 0) {
+                        try {
+                            openPatientProfile(selectedRow);
+                        } catch (Exception e) {
+                            System.err.println("Error while opening patient profile: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    } else {
+                        System.out.println("No valid row selected.");
+                    }
+
+                    // Reset lastClickTime after a double-click
+                    lastClickTime = 0;
+                } else {
+                    //System.out.println("Single click detected.");
+                    lastClickTime = currentTime; // Update last click time
+                }
+            }
+        });
+        disableTableEditOnDoubleClick();
+
     }
+    private void openPatientProfile(int selectedRow) {
+        try {
+            // Retrieve the data for the selected row
+            Object patientID = model.getValueAt(selectedRow, 0);
+            Object dob = model.getValueAt(selectedRow, 1);
+            Object address = model.getValueAt(selectedRow, 2);
+            Object email = model.getValueAt(selectedRow, 3);
+            Object phone = model.getValueAt(selectedRow, 4);
+
+            // Fetch the report for this patient from the database
+            String patientReport = "";
+            try (Connection connection = CipherCareSQL.getConnection()) {
+                String query = "SELECT patientReport FROM Patient WHERE patientID = ?";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    preparedStatement.setInt(1, Integer.parseInt(patientID.toString()));
+                    try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                        if (resultSet.next()) {
+                            patientReport = resultSet.getString("patientReport");
+                        }
+                    }
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(frame, "Error retrieving patient report: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            }
+
+            // Create the profile window
+            JFrame profileFrame = new JFrame("Patient Profile");
+            profileFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            profileFrame.setSize(frame.getSize());
+            profileFrame.setLocation(frame.getLocation());
+
+            // Use BorderLayout for the frame
+            profileFrame.setLayout(new BorderLayout());
+
+            // Create a panel for the patient details
+            JPanel detailsPanel = new JPanel(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(5, 5, 5, 5); // Small padding
+            gbc.anchor = GridBagConstraints.NORTHWEST; // Align to the top-left corner
+
+            // Add labels and values
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            detailsPanel.add(new JLabel("Patient ID:"), gbc);
+            gbc.gridx = 1;
+            detailsPanel.add(new JLabel(String.valueOf(patientID)), gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy++;
+            detailsPanel.add(new JLabel("Date of Birth:"), gbc);
+            gbc.gridx = 1;
+            detailsPanel.add(new JLabel(dob.toString()), gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy++;
+            detailsPanel.add(new JLabel("Address:"), gbc);
+            gbc.gridx = 1;
+            detailsPanel.add(new JLabel(address.toString()), gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy++;
+            detailsPanel.add(new JLabel("Email:"), gbc);
+            gbc.gridx = 1;
+            detailsPanel.add(new JLabel(email.toString()), gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy++;
+            detailsPanel.add(new JLabel("Phone Number:"), gbc);
+            gbc.gridx = 1;
+            detailsPanel.add(new JLabel(phone.toString()), gbc);
+
+            // Add detailsPanel to the top of the frame
+            profileFrame.add(detailsPanel, BorderLayout.NORTH);
+
+            // Create a panel for the text area with a title
+            JPanel reportPanel = new JPanel(new BorderLayout());
+            JLabel reportTitle = new JLabel("Patient Reports");
+            reportTitle.setHorizontalAlignment(SwingConstants.LEFT); // Align the title to the left
+            reportTitle.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // Add some padding
+
+            // Add the text area for patient report
+            JTextArea reportTextArea = new JTextArea(10, 40); // 10 rows, 40 columns
+            reportTextArea.setLineWrap(true);
+            reportTextArea.setWrapStyleWord(true);
+            reportTextArea.setText(patientReport); // Set the fetched report
+            JScrollPane scrollPane = new JScrollPane(reportTextArea); // Add scrolling support
+
+            // Add title and text area to the report panel
+            reportPanel.add(reportTitle, BorderLayout.NORTH);
+            reportPanel.add(scrollPane, BorderLayout.CENTER);
+
+            // Add the report panel to the frame
+            profileFrame.add(reportPanel, BorderLayout.CENTER);
+
+            // Create a smaller Save button and place it in a panel
+            JButton saveButton = new JButton("Save");
+            saveButton.setPreferredSize(new Dimension(80, 30)); // Small button dimensions
+            saveButton.addActionListener(e -> {
+                String report = reportTextArea.getText();
+                if (!report.trim().isEmpty()) {
+                    try (Connection connection = CipherCareSQL.getConnection()) {
+                        String query = "UPDATE Patient SET patientReport = ? WHERE patientID = ?";
+                        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                            preparedStatement.setString(1, report); // Set the report text
+                            preparedStatement.setInt(2, Integer.parseInt(patientID.toString())); // Set the patient ID
+                            int rowsUpdated = preparedStatement.executeUpdate();
+                            if (rowsUpdated > 0) {
+                                JOptionPane.showMessageDialog(profileFrame, "Report saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                JOptionPane.showMessageDialog(profileFrame, "Failed to save report.", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(profileFrame, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        ex.printStackTrace();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(profileFrame, "Report cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            });
+
+            // Add Save button to a smaller JPanel at the bottom
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.add(saveButton); // Center the button in the panel
+            profileFrame.add(buttonPanel, BorderLayout.SOUTH);
+
+            // Display the profile window
+            profileFrame.setVisible(true);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame,
+                    "An error occurred while opening the patient profile.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
     private void viewPatients() {
         model.setRowCount(0); // Clear existing rows
@@ -107,6 +290,9 @@ public class CipherCareMainGUI {
                     String email = resultSet.getString("patientEmail");
                     String phone = resultSet.getString("patientPhone");
 
+                    // Log the retrieved row for debugging
+                    //System.out.println("Row: " + id + ", " + dob + ", " + address + ", " + email + ", " + phone);
+
                     model.addRow(new Object[]{id, dob, address, email, phone});
                 }
             }
@@ -115,7 +301,6 @@ public class CipherCareMainGUI {
             e.printStackTrace();
         }
     }
-
     private void editPatient() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow == -1) {
