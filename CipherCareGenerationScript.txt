@@ -36,7 +36,7 @@ CREATE TABLE `appointment` (
   KEY `telehealthID` (`telehealthID`),
   CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`recordID`) REFERENCES `medicalrecord` (`recordID`),
   CONSTRAINT `appointment_ibfk_2` FOREIGN KEY (`telehealthID`) REFERENCES `telehealth` (`telehealthID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,7 +45,7 @@ CREATE TABLE `appointment` (
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
-INSERT INTO `appointment` VALUES (4,3,NULL,'2025-02-01','11:00:00','11:30:00'),(5,2,1,'2024-02-01','01:00:00','01:35:00');
+INSERT INTO `appointment` VALUES (4,3,NULL,'2025-02-01','11:00:00','11:30:00'),(5,2,1,'2024-02-01','01:00:00','01:35:00'),(7,12,1,'2026-01-01','10:00:00','10:30:00'),(8,13,1,'2026-01-01','12:00:00','01:00:00'),(9,4,NULL,'2025-02-01','10:00:00','10:30:00'),(10,5,NULL,'2025-04-04','12:00:00','12:45:00'),(11,15,NULL,'2025-02-02','10:10:00','10:20:00');
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,6 +91,7 @@ CREATE TABLE `patient` (
   `patientEmail` varchar(150) DEFAULT NULL,
   `patientPhone` varchar(15) DEFAULT NULL,
   `patientAddress` varchar(150) DEFAULT NULL,
+  `patientReport` text,
   PRIMARY KEY (`patientID`),
   UNIQUE KEY `patientID_UNIQUE` (`patientID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb3;
@@ -102,7 +103,7 @@ CREATE TABLE `patient` (
 
 LOCK TABLES `patient` WRITE;
 /*!40000 ALTER TABLE `patient` DISABLE KEYS */;
-INSERT INTO `patient` VALUES (2,'2000-01-27','jjhonjhondon@ymail.com','5558873','6100 E 2nd St, Casper, WY 82609'),(3,'2001-05-16','BuffaloGary@gmail.com','5550010','525 Sinatra Dr, Hoboken, NJ 07030'),(4,'1981-04-18','wilfredstheodore@gmail.com','5550237','85 Pike St, Seattle, WA 98101'),(5,'1980-05-08','stevenclay@gmail.com','5555022','5555 Hermann Park Dr, Houston, TX 77030'),(6,'1988-10-10','Reggiebays1988@gmail.com','5551243','5500 Sunset Blvd, Los Angeles, CA 90028'),(7,'2000-12-13','hmaryK09@gmail.com','5559908','4337 Norfolk Ave, St. Louis, MO 63110'),(8,'1994-09-09','sallynantucket@gmail.com','5559619','16 Sunset Hill Ln, Nantucket, MA 02554'),(9,'1987-07-27','MusicRick88@yahoo.com','5554374','2055 Idlewild Dr, Reno, NV 89509'),(10,'1975-11-04','AYFGeoffrey@gmail.com','5553141','15470 Milldale Dr, Los Angeles, CA 90077'),(11,'1987-10-31','MarkScott@gmail.com','5551983','175 S Main St, Fredonia, AZ 86022'),(12,'1988-03-18','BegBegharf@gmail.com','5551347','1595 Dows St, Ely, IA 52227'),(13,'1988-03-18','BenjaminBenjamin1222@gmail.com','5552198','2101 Constitution Ave. NW, Washington, DC 20418'),(14,'2001-09-16','McGordon3131@gmail.com','5551568','139 N Main St, Moab, UT 84532'),(15,'1982-01-30','happyyarn29Rach@gmail.com','5554678','828 N Rampart St, New Orleans, LA 70116'),(16,'1974-07-17','SailorTalestoSailorTunes@gmail.com','5557872','2 Murray Blvd, Charleston, SC 29401'),(17,'1992-04-27','JohnpinkHAL@gmail.com','5559070','10 Rockefeller Plaza, New York, NY 10020'),(18,'1987-07-14','theballadofmichael@gmail.com','5551234','200 Ave F, Hereford, TX 79045'),(19,'1969-01-27','Gregor15141378@gmail.com','5551918','710 Williamson Rd NE, Roanoke, VA 24016'),(20,'1962-11-18','ericcanterrichard62@yahoo.com','5558913','303 Washington Ave, New Haven, CT 06519'),(21,'1961-08-08','theriddle@gmail.com','5556161','111 S Michigan Ave, Chicago, IL 60603'),(22,'1980-07-18','PSRibbonVCakei@gmail.com','5551177','730 S Mill Ave, Tempe, AZ 85281'),(23,'1990-02-24','JorgeL247365@ymail.com','5553624','124 E 2nd St, Crookston, MN 56716'),(24,'1995-01-16','ShawnJason@gmail.com','5550555','1775 Front St, Lynden, WA 98264'),(25,'1988-09-17','DixitAndWeaver@gmail.com','5554321','3810 Lake Ave, Fort Wayne, IN 46805'),(26,'1983-01-26','DanGJames@gmail.com','5558123','3215 S Rancho Dr, Las Vegas, NV 89102'),(27,'1964-02-29','ThomasGaryPhillips@gmail.com','5553038','888 Warren St, Albany, NY 12208'),(28,'1970-07-06','IsabelleBanks@gmail.com','5558765','404 Agona St, Manteo, NC 27954'),(29,'1970-06-07','AllForKaden0809@gmail.com','5559573','2901 Coastal Hwy, Ocean City, MD 21842'),(30,'1949-07-25','ratpack5@gmail.com','5554174','27 Barclay St, New York, NY 10007'),(31,'2009-11-11','onikahmed@gmail.com','3238775939','6306 Gifford ave bell ca 90201');
+INSERT INTO `patient` VALUES (2,'2000-01-27','jjhonjhondon@ymail.com','5558873','6100 E 2nd St, Casper, WY 82609','hi\nhello'),(3,'2001-05-16','BuffaloGary@gmail.com','5550010','525 Sinatra Dr, Hoboken, NJ 07030',NULL),(4,'1981-04-18','wilfredstheodore@gmail.com','5550237','85 Pike St, Seattle, WA 98101',NULL),(5,'1980-05-08','stevenclay@gmail.com','5555022','5555 Hermann Park Dr, Houston, TX 77030',NULL),(6,'1988-10-10','Reggiebays1988@gmail.com','5551243','5500 Sunset Blvd, Los Angeles, CA 90028',NULL),(7,'2000-12-13','hmaryK09@gmail.com','5559908','4337 Norfolk Ave, St. Louis, MO 63110',NULL),(8,'1994-09-09','sallynantucket@gmail.com','5559619','16 Sunset Hill Ln, Nantucket, MA 02554',NULL),(9,'1987-07-27','MusicRick88@yahoo.com','5554374','2055 Idlewild Dr, Reno, NV 89509',NULL),(10,'1975-11-04','AYFGeoffrey@gmail.com','5553141','15470 Milldale Dr, Los Angeles, CA 90077',NULL),(11,'1987-10-31','MarkScott@gmail.com','5551983','175 S Main St, Fredonia, AZ 86022',NULL),(12,'1988-03-18','BegBegharf@gmail.com','5551347','1595 Dows St, Ely, IA 52227',NULL),(13,'1988-03-18','BenjaminBenjamin1222@gmail.com','5552198','2101 Constitution Ave. NW, Washington, DC 20418',NULL),(14,'2001-09-16','McGordon3131@gmail.com','5551568','139 N Main St, Moab, UT 84532',NULL),(15,'1982-01-30','happyyarn29Rach@gmail.com','5554678','828 N Rampart St, New Orleans, LA 70116',NULL),(16,'1974-07-17','SailorTalestoSailorTunes@gmail.com','5557872','2 Murray Blvd, Charleston, SC 29401',NULL),(17,'1992-04-27','JohnpinkHAL@gmail.com','5559070','10 Rockefeller Plaza, New York, NY 10020',NULL),(18,'1987-07-14','theballadofmichael@gmail.com','5551234','200 Ave F, Hereford, TX 79045',NULL),(19,'1969-01-27','Gregor15141378@gmail.com','5551918','710 Williamson Rd NE, Roanoke, VA 24016',NULL),(20,'1962-11-18','ericcanterrichard62@yahoo.com','5558913','303 Washington Ave, New Haven, CT 06519',NULL),(21,'1961-08-08','theriddle@gmail.com','5556161','111 S Michigan Ave, Chicago, IL 60603',NULL),(22,'1980-07-18','PSRibbonVCakei@gmail.com','5551177','730 S Mill Ave, Tempe, AZ 85281',NULL),(23,'1990-02-24','JorgeL247365@ymail.com','5553624','124 E 2nd St, Crookston, MN 56716',NULL),(24,'1995-01-16','ShawnJason@gmail.com','5550555','1775 Front St, Lynden, WA 98264',NULL),(25,'1988-09-17','DixitAndWeaver@gmail.com','5554321','3810 Lake Ave, Fort Wayne, IN 46805',NULL),(26,'1983-01-26','DanGJames@gmail.com','5558123','3215 S Rancho Dr, Las Vegas, NV 89102',NULL),(27,'1964-02-29','ThomasGaryPhillips@gmail.com','5553038','888 Warren St, Albany, NY 12208',NULL),(28,'1970-07-06','IsabelleBanks@gmail.com','5558765','404 Agona St, Manteo, NC 27954',NULL),(29,'1970-06-07','AllForKaden0809@gmail.com','5559573','2901 Coastal Hwy, Ocean City, MD 21842',NULL),(30,'1949-07-25','ratpack5@gmail.com','5554174','27 Barclay St, New York, NY 10007',NULL),(31,'2009-11-11','onikahmed@gmail.com','3238775939','6303 Gifford ave bell ca 90201',NULL);
 /*!40000 ALTER TABLE `patient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -176,4 +177,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-29 20:43:55
+-- Dump completed on 2024-12-01 22:57:02
