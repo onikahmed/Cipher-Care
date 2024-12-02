@@ -228,7 +228,7 @@ public class CipherCareMainGUI {
             // Add the report panel to the frame
             profileFrame.add(reportPanel, BorderLayout.CENTER);
 
-            // Create a smaller Save button and place it in a panel
+
             JButton saveButton = new JButton("Save");
             saveButton.setPreferredSize(new Dimension(80, 30)); // Small button dimensions
             saveButton.addActionListener(e -> {
