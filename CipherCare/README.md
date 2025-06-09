@@ -2,7 +2,7 @@
 
 CipherCare: Electronic Medical Record System.
 
-Short Description: CipherCare is a Java-based application designed for efficient
+Description: CipherCare is a Java-based application designed for efficient
 patient management. It provides features for logging in, viewing patient details,
 adding patient reports, managing appointments, and more, making it a complete 
 solution for clinics or small healthcare providers.
