@@ -1,100 +1,120 @@
+# CipherCare: Electronic Medical Record System
 
+## Description
 
-CipherCare: Electronic Medical Record System.
+**CipherCare** is a Java-based application designed for efficient patient management. It provides features for logging in, viewing patient details, adding patient reports, managing appointments, and more — making it a complete solution for clinics or small healthcare providers.
 
-Description: CipherCare is a Java-based application designed for efficient
-patient management. It provides features for logging in, viewing patient details,
-adding patient reports, managing appointments, and more, making it a complete 
-solution for clinics or small healthcare providers.
+## Features
 
-Features
--User Authentication:
-Secure login interface with username and password validation.
--Patient Management:
-View, add, edit, delete, and search for patient records.
--Report Management:
-Add and save patient reports that persist in the database.
--Appointment Management:
-Manage appointments directly within the GUI.
--User-Friendly Interface:
-Built using Java Swing with an intuitive layout and responsive design.
+* **User Authentication**
+  Secure login interface with username and password validation.
 
-Prerequisites
+* **Patient Management**
+  View, add, edit, delete, and search for patient records.
+
+* **Report Management**
+  Add and save patient reports that persist in the database.
+
+* **Appointment Management**
+  Manage appointments directly within the GUI.
+
+* **User-Friendly Interface**
+  Built using Java Swing with an intuitive layout and responsive design.
+
+## Prerequisites
+
 To run CipherCare, ensure the following are installed:
 
--Java Development Kit (JDK) (version 11 or higher)
--MySQL Database
--IDE (e.g., IntelliJ IDEA, Eclipse) or a text editor with Java support
--MySQL Connector for Java
+* Java Development Kit (JDK) 11 or higher
+* MySQL Database
+* IDE (e.g., IntelliJ IDEA, Eclipse) or a text editor with Java support
+* MySQL Connector for Java
 
-Installation
-Step 1: Clone the Repository
-Clone the project from your repository:
+## Installation
+
+### Step 1: Clone the Repository
+
+```bash
 git clone https://github.com/onik-ahmed/ciphercare.git
 cd ciphercare
+```
 
-Step 2: Setup the Database
-Open your MySQL client or GUI (e.g., MySQL Workbench).
-Create a database:
-CREATE DATABASE CipherCare;
-USE CipherCare;
-Run the SQL script included in the project (CipherCareSQL.java) to create the necessary
-tables and populate sample data.
+### Step 2: Set Up the Database
 
-Step 3: Configure Database Connection
-Update the CipherCareSQL class with your database credentials:
+1. Open your MySQL client or GUI (e.g., MySQL Workbench).
+2. Create and select the database:
+
+   ```sql
+   CREATE DATABASE CipherCare;
+   USE CipherCare;
+   ```
+3. Run the SQL script provided in `resources/ciphercare.sql` to create tables and populate sample data.
+
+### Step 3: Configure Database Connection
+
+In `CipherCareSQL.java`, update the following with your MySQL credentials:
+
+```java
 private static final String URL = "jdbc:mysql://localhost:3306/CipherCare";
-private static final String USER = "your-username";//same as yourMYSQL
-private static final String PASSWORD = "your-password";//same as yourMYSQL
+private static final String USER = "your-username"; // your MySQL username
+private static final String PASSWORD = "your-password"; // your MySQL password
+```
 
-Step 4: Build and Run
-Open the project in your IDE.
-Compile and run the CipherCareLoginGUI class.
-Use the following credentials to log in (or update them as needed):
-Username: (same as you MYSQL)
-Password: (same as you MYSQL)
+### Step 4: Build and Run
 
-Login Page
-    Enter valid credentials to log in.
-"   CipherCare" is prominently displayed at the top, and the application credits are listed at the bottom.
-Main Page
-    Access patient records:
-        Add Patient: Add new patients to the database.
-        View Patients: View a list of all patients.
-        Edit Patient: Update patient details.
-        Delete Patient: Remove a patient from the database.
-        Search Patient: Search for a patient by name, email, or phone.
-Patient Profile
-    View detailed patient information.
-    Add, view, and update reports associated with each patient.
+1. Open the project in your preferred IDE.
+2. Compile and run the `CipherCareLoginGUI` class.
+3. Use your MySQL credentials to log in.
 
-File Structure:
+## Application Overview
+
+### Login Page
+
+* Enter valid credentials to log in.
+* "CipherCare" is prominently displayed at the top.
+* Application credits are listed at the bottom.
+
+### Main Page
+
+* **Add Patient**: Add new patients to the database.
+* **View Patients**: Display all existing patients.
+* **Edit Patient**: Update patient details.
+* **Delete Patient**: Remove patient records.
+* **Search Patient**: Search by name, email, or phone number.
+
+### Patient Profile
+
+* View detailed patient info.
+* Add, view, and update associated reports.
+
+## File Structure
+
+```
 CipherCare/
 ├── src/
-│   ├── CipherCareMainGUI.java         # Main interface for managing patients
-│   ├── CipherCareLoginGUI.java        # Login interface
-│   ├── CipherCareAddGUI.java          # Interface to add patients
-│   ├── CipherCareAppointmentGUI.java  # Appointment management interface
-│   ├── CipherCareSQL.java             # Database connection and queries
-│   ├── Patient.java                   # Patient model class
-│   ├── PatientDAO.java                # Data Access Object interface
+│   ├── CipherCareMainGUI.java         # Main interface
+│   ├── CipherCareLoginGUI.java        # Login page
+│   ├── CipherCareAddGUI.java          # Add patient interface
+│   ├── CipherCareAppointmentGUI.java  # Appointment management
+│   ├── CipherCareSQL.java             # DB connection and queries
+│   ├── Patient.java                   # Patient model
+│   ├── PatientDAO.java                # DAO interface
 │   ├── PatientDAOImpl.java            # DAO implementation
-│   └── PatientController.java         # Business logic controller
+│   └── PatientController.java         # Business logic
 ├── resources/
-│   └── ciphercare.sql                 # SQL script to set up the database
-└── README.md                          # Project documentation (this file)
+│   └── ciphercare.sql                 # SQL schema and sample data
+└── README.md                          # Project documentation
+```
 
-Technologies Used
--Java Swing: For building the graphical user interface.
--MySQL: For data storage and retrieval.
--JDBC: To connect Java to the MySQL database
+## Technologies Used
 
-Credits
+* **Java Swing**: GUI development
+* **MySQL**: Data storage
+* **JDBC**: Java database connectivity
+
+## Credits
+
 Developed by:
-Joshua
-Jonathan
-Andrew
-Francisco
-Onik
+Joshua, Jonathan, Andrew, Francisco, Onik
 
-Group Project for CSC381 class.
+*Group Project for CSC381 class*
